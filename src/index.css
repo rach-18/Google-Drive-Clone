@@ -1,0 +1,14 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: 0;
+}
+
+body {
+    font-family: 'Geist', sans-serif;
+    background-color: #F8FAFD;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
