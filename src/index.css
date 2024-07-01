@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Geist', sans-serif;
-    background-color: #F8FAFD;
+    /* background-color: #F8FAFD; */
 }
 
 @tailwind base;

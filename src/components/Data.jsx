@@ -1,7 +1,37 @@
 import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import GridViewOutlinedIcon from '@mui/icons-material/GridViewOutlined';
+import { useEffect, useState } from 'react';
+import { db } from '../firebase';
+import { collection, onSnapshot } from 'firebase/firestore';
 
 function Data() {
+    const [files, setFiles] = useState([]);
+
+    console.log(files);
+
+    useEffect(() => {
+        const unsubscribe = onSnapshot(collection(db, "myFiles"), snapshot => {
+            setFiles(snapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            })));
+        });
+
+        return () => unsubscribe();
+    }, []);
+
+    function changeBytes(bytes, decimals = 2) {
+        if (bytes === 0) {
+            return '0 Bytes';
+        }
+
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ["Bytes", "KB", 'MB', "GB", "TB", "PB", "EB", "ZB", "YB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i];
+    }
+
     return (
         <div className="bg-white w-full mr-5 rounded-xl p-5">
             <div className='flex justify-between'>
@@ -32,27 +62,15 @@ function Data() {
                         <p>Last Modified</p>
                     </div>
                 </div>
-                <div className='hover-transition flex justify-between bg-slate-100 p-4 rounded-xl cursor-pointer hover:bg-[#DBEAFE]'>
-                    <p>React Interview Questions.pdf</p>
-                    <div className='flex w-[30%] justify-between'>
-                        <p>460.92 KB</p>
-                        <p>Modified . 30-06-2024</p>
-                    </div>
-                </div>
-                <div className='hover-transition flex justify-between bg-slate-100 p-4 rounded-xl cursor-pointer hover:bg-[#DBEAFE]'>
-                    <p>React Interview Questions.pdf</p>
-                    <div className='flex w-[30%] justify-between'>
-                        <p>460.92 KB</p>
-                        <p>Modified . 30-06-2024</p>
-                    </div>
-                </div>
-                <div className='hover-transition flex justify-between bg-slate-100 p-4 rounded-xl cursor-pointer hover:bg-[#DBEAFE]'>
-                    <p>React Interview Questions.pdf</p>
-                    <div className='flex w-[30%] justify-between'>
-                        <p>460.92 KB</p>
-                        <p>Modified . 30-06-2024</p>
-                    </div>
-                </div>
+                {files.map(({ id, data }) => (
+                    <a href={data.fileURL} target='_blank' key={id} className='hover-transition flex justify-between bg-slate-100 p-4 rounded-xl cursor-pointer hover:bg-[#DBEAFE]'>
+                        <p>{data.filename}</p>
+                        <div className='flex w-[30%] justify-between'>
+                            <p>{changeBytes(data.size)}</p>
+                            <p>Modified . {new Date(data.timestamp?.toDate()).toLocaleDateString()}</p>
+                        </div>
+                    </a>
+                ))}
             </div>
         </div>
     )

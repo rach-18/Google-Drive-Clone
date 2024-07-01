@@ -2,10 +2,14 @@ import SearchIcon from '@mui/icons-material/Search';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import Avatar from '@mui/material/Avatar';
+import { useState } from 'react';
 
-function Header() {
+function Header({photoURL}) {
+    const [accountMenu, setAccountMenu] = useState(false);
+
     return (
-        <div className='flex justify-between items-center px-5 py-2 text-[#52525b]'>
+        <div className='flex justify-between items-center px-8 py-2 text-[#52525b]'>
             <div className='flex items-center gap-2 w-[10%]'>
                 <img 
                     className='w-[25%]'
@@ -25,12 +29,23 @@ function Header() {
                     className='hover-transition hover:bg-[#D1D6DD] p-1 rounded-full cursor-pointer' 
                 />
             </div>
-            <div className='flex items-center gap-3 justify-between w-[8%]'>
+            <div className='flex items-center gap-3 justify-between w-[8%] relative'>
                 <HelpOutlineOutlinedIcon style={{fontSize : 28}} />
                 <SettingsOutlinedIcon style={{fontSize : 28}} />
-                <img
-                    className='w-1/3 rounded-full' 
-                    src="https://lh3.googleusercontent.com/a/ACg8ocLygmTiCbSJfTHqsdP-G7sDkD1GbzP9iVaM1nO-9Yky6z1rIg=s96-c" alt="" />
+                <Avatar 
+                    onClick={() => setAccountMenu((prev) => !prev)}
+                    className='cursor-pointer' 
+                    src={photoURL} 
+                />
+                {
+                    accountMenu ? (
+                        <div className='absolute right-0 bottom-[-210%] w-[12rem] bg-white rounded-lg shadow-md'>
+                            <p className='px-5 py-2 font-semibold text-black'>My Account</p>
+                            <hr />
+                            <p className='hover-transition px-5 py-2 text-red-500 hover:bg-slate-200 cursor-pointer'>Log out</p>
+                        </div>
+                    ) : (<></>)
+                }
             </div>
         </div>
     )
