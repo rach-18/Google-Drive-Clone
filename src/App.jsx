@@ -8,6 +8,15 @@ import './App.css';
 function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [sortOption, setSortOption] = useState('');
+  const [size, setSize] = useState("");
+  const [bytes, setBytes] = useState(0);
+  const [memory, setMemory] = useState(0);
+  // const [theme, setTheme] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const [theme, setTheme] = useState('dark');
+
+  console.log(theme);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -22,6 +31,14 @@ function App() {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    const mem = (bytes / 100000000) * 100;
+    console.log(mem);
+    setMemory(mem);
+  }, [bytes]);
+
+  console.log(memory);
+
   function signIn() {
     signInWithPopup(auth, provider)
       .then((result) => setUser(result.user))
@@ -35,11 +52,14 @@ function App() {
   return (
     <>
       {user ? (
-        <div className="bg-[#F8FAFD]">
-          <Header photoURL={user.photoURL} />
+        <div
+          style={{backgroundColor: theme === 'dark' ? '#071A2B' : '#F8FAFD'}} 
+          // className="bg-[#F8FAFD]"
+        >
+          <Header photoURL={user.photoURL} setSearchQuery={setSearchQuery} setSortOption={setSortOption} />
           <div className="app flex">
-            <Sidebar />
-            <Data />
+            <Sidebar size={size} memory={memory} />
+            <Data searchQuery={searchQuery} sortOption={sortOption} setSize={setSize} setBytes={setBytes} />
           </div>
         </div>
       ) : (
@@ -49,6 +69,7 @@ function App() {
               <img
                 className="w-[25%]"
                 src="https://gdisk.vercel.app/logo.png"
+                alt="Disk logo"
               />
               <p className="text-2xl font-medium">Disk</p>
             </div>

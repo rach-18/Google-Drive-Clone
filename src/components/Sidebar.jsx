@@ -15,7 +15,7 @@ import { storage, db } from '../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
-function Sidebar() {
+function Sidebar({ size, memory, theme }) {
     const [open, setOpen] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [file, setFile] = useState(null);
@@ -54,6 +54,9 @@ function Sidebar() {
             setUploading(false);
         }
     }
+
+    // Format the memory to a proper percentage string
+    const memoryPercentage = `${memory}%`;
 
     return (
         <>
@@ -160,8 +163,13 @@ function Sidebar() {
                     </div>
                 </div>
                 <div className='w-full flex flex-col items-center gap-1'>
-                    <div className='w-full h-[0.5rem] rounded-full bg-[#C9CDD2]'></div>
-                    <p>460.92 KB of 100MB</p>
+                    <div className='w-full h-[0.5rem] rounded-full bg-[#C9CDD2]'>
+                        <div 
+                            style={{width : memoryPercentage}}
+                            className='h-full rounded-full bg-green-500'
+                        ></div>
+                    </div>
+                    <p>{size} of 100MB</p>
                 </div>
             </div>
         </>
