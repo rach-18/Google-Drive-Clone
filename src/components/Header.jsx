@@ -84,12 +84,14 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
                     outline: 'none',
                 }}
             >
-                <Box className='bg-white' 
-                    sx={{ 
+                <Box 
+                    sx={{
+                        backgroundColor: theme === 'dark' ? '#030712' : 'white', 
                         maxWidth: 500, 
                         flexGrow: 1, 
                         outline: 'none', 
-                        borderRadius: 2 
+                        borderRadius: 2,
+                        color: theme === 'dark' ? '#94a3b8' : 'black'
                     }}
                 >
                     <div className='flex justify-between items-center px-5 py-5'>
@@ -101,7 +103,7 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
                             onClick={prevBtn}
                             className='cursor-pointer'
                             style={{
-                                color: index === 0 ? 'gray' : 'black'
+                                color: theme === 'dark' ? (index === 0 ? '#5c5b5b' : 'white') : (index === 0 ? 'gray' : 'black') 
                             }}
                         />
                         <div className='flex flex-col items-center gap-2'>
@@ -112,29 +114,38 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
                             onClick={nextBtn}
                             className='cursor-pointer'
                             style={{
-                                color: index === images.length - 1 ? 'gray' : 'black'
+                                color: theme === 'dark' ? (index === images.length - 1 ? '#5c5b5b' : 'white') : (index === images.length - 1 ? 'gray' : 'black')
                             }}
                         />
                     </div>
                 </Box>
             </Modal>
-            <div className='flex justify-between items-center pl-8 pr-12 py-2 text-[#52525b]'>
+            <div 
+                style={{color: theme === 'dark' ? '#95a5bd' : '#52525b'}}
+                className='flex justify-between items-center pl-8 pr-12 py-2'
+            >
                 <div className='flex items-center gap-2 w-[10%]'>
                     <img
                         className='w-[25%]'
                         src="https://gdisk.vercel.app/logo.png"
                         alt="Disk logo"
                     />
-                    <p className='text-2xl font-medium'>Disk</p>
+                    <p className='text-2xl font-medium'>
+                        Disk
+                    </p>
                 </div>
-                <div className='flex items-center bg-[#E9EEF6] justify-between px-5 py-3 rounded-full gap-2 w-1/2'>
+                <div 
+                    style={{backgroundColor: theme === 'dark' ? '#0D2136' : '#E9EEF6'}}
+                    className='flex items-center justify-between px-5 py-3 rounded-full gap-2 w-1/2'
+                >
                     <div className='flex items-center'>
                         <SearchIcon
                             style={{ fontSize: 35 }}
                             className='hover-transition hover:bg-[#D1D6DD] p-1 rounded-full cursor-pointer'
                         />
                         <input 
-                            className='bg-[#E9EEF6]' 
+                            style={{backgroundColor: theme === 'dark' ? '#0D2136' : '#E9EEF6'}}
+                            className='outline-none' 
                             placeholder='Search in Disk' 
                             type="text" 
                             onChange={(e) => setSearchQuery(e.target.value)}
@@ -147,33 +158,73 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
                             onClick={() => setSortMenu((prev) => !prev)}
                         />
                         {sortMenu && (
-                            <div className='absolute right-0 top-10 w-[15rem] bg-white rounded-lg shadow-md z-10'>
+                            <div 
+                                style={{
+                                    backgroundColor: theme === 'dark' ? '#030712' : 'white',
+                                    color: theme === 'dark' ? 'white' : 'black'
+                                }}
+                                className='absolute right-0 top-10 w-[15rem] bg-white rounded-lg shadow-md z-10'
+                            >
                                 <p className='font-semibold px-5 py-2'>Sort By</p>
-                                <hr />
-                                <p 
-                                    className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
-                                    onClick={() => handleSortOption('name_asc')}
-                                >
-                                    Name Ascending
-                                </p>
-                                <p 
-                                    className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
-                                    onClick={() => handleSortOption('name_desc')}
-                                >
-                                    Name Descending
-                                </p>
-                                <p 
-                                    className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
-                                    onClick={() => handleSortOption('date_asc')}
-                                >
-                                    Date Modified Ascending
-                                </p>
-                                <p 
-                                    className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
-                                    onClick={() => handleSortOption('date_desc')}
-                                >
-                                    Date Modified Descending
-                                </p>
+                                {/* <hr /> */}
+                                {
+                                    theme === 'dark' ? (
+                                        <>
+                                            <p 
+                                                className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
+                                                onClick={() => handleSortOption('name_asc')}
+                                            >
+                                                Name Ascending
+                                            </p>
+                                            <p 
+                                                className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
+                                                onClick={() => handleSortOption('name_desc')}
+                                            >
+                                                Name Descending
+                                            </p>
+                                            <p 
+                                                className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
+                                                onClick={() => handleSortOption('date_asc')}
+                                            >
+                                                Date Modified Ascending
+                                            </p>
+                                            <p 
+                                                className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
+                                                onClick={() => handleSortOption('date_desc')}
+                                            >
+                                                Date Modified Descending
+                                            </p>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <p 
+                                                className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
+                                                onClick={() => handleSortOption('name_asc')}
+                                            >
+                                                Name Ascending
+                                            </p>
+                                            <p 
+                                                className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
+                                                onClick={() => handleSortOption('name_desc')}
+                                            >
+                                                Name Descending
+                                            </p>
+                                            <p 
+                                                className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
+                                                onClick={() => handleSortOption('date_asc')}
+                                            >
+                                                Date Modified Ascending
+                                            </p>
+                                            <p 
+                                                className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
+                                                onClick={() => handleSortOption('date_desc')}
+                                            >
+                                                Date Modified Descending
+                                            </p>
+                                        </>
+                                    )
+                                }
+    
                             </div>
                         )}
                     </div>
@@ -183,12 +234,32 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
                     <SettingsOutlinedIcon onClick={() => setThemeMenu((prev) => !prev)} className='hover-transition hover:bg-[#D1D6DD] p-1 rounded-full cursor-pointer' style={{ fontSize: 35 }} />
                     {
                         themeMenu ? (
-                            <div className='absolute right-[2rem] top-[100%] w-[8rem] bg-white rounded-lg shadow-md'>
-                                <p className='px-5 py-2 font-semibold text-black'>Theme</p>
-                                <hr />
-                                <p className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Light</p>
-                                <p className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Dark</p>
-                                <p className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>System</p>
+                            <div 
+                                style={{
+                                    backgroundColor: theme === 'dark' ? '#030712' : 'white',
+                                    color: theme === 'dark' ? 'white' : 'black'
+                                }}
+                                className='absolute right-[2rem] top-[100%] w-[8rem] bg-white rounded-lg shadow-md'
+                            >
+                                {
+                                    theme === 'dark' ? (
+                                        <>
+                                            <p className='px-5 py-2 font-semibold'>Theme</p>
+                                            {/* <hr /> */}
+                                            <p className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Light</p>
+                                            <p className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Dark</p>
+                                            <p className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>System</p>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <p className='px-5 py-2 font-semibold'>Theme</p>
+                                            {/* <hr /> */}
+                                            <p className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Light</p>
+                                            <p className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Dark</p>
+                                            <p className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>System</p>       
+                                        </>
+                                    )
+                                }
                             </div>
                         ) : (
                             <></>

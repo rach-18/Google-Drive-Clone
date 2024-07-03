@@ -14,9 +14,9 @@ function App() {
   const [bytes, setBytes] = useState(0);
   const [memory, setMemory] = useState(0);
   // const [theme, setTheme] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light');
 
-  console.log(theme);
+  // console.log(theme);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -33,11 +33,11 @@ function App() {
 
   useEffect(() => {
     const mem = (bytes / 100000000) * 100;
-    console.log(mem);
+    // console.log(mem);
     setMemory(mem);
   }, [bytes]);
 
-  console.log(memory);
+  // console.log(memory);
 
   function signIn() {
     signInWithPopup(auth, provider)
@@ -54,12 +54,13 @@ function App() {
       {user ? (
         <div
           style={{backgroundColor: theme === 'dark' ? '#071A2B' : '#F8FAFD'}} 
-          // className="bg-[#F8FAFD]"
+          className="h-screen"
         >
-          <Header photoURL={user.photoURL} setSearchQuery={setSearchQuery} setSortOption={setSortOption} />
+          <Header photoURL={user.photoURL} setSearchQuery={setSearchQuery} setSortOption={setSortOption} theme={theme} />
           <div className="app flex">
-            <Sidebar size={size} memory={memory} />
-            <Data searchQuery={searchQuery} sortOption={sortOption} setSize={setSize} setBytes={setBytes} />
+            <Sidebar size={size} memory={memory} theme={theme} />
+            <Data searchQuery={searchQuery} sortOption={sortOption} setSize={setSize} setBytes={setBytes} theme={theme} />
+            {/* <Preview previewFile={previewFile} /> */}
           </div>
         </div>
       ) : (
