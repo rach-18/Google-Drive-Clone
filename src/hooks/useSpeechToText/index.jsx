@@ -68,7 +68,8 @@ function useSpeechToText(options) {
         isListening,
         transcript,
         startListening,
-        stopListening
+        stopListening,
+        setTranscript
     }
 }
 

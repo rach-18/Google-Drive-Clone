@@ -10,18 +10,18 @@ import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutl
 import { Modal, Box } from '@mui/material';
 import { auth } from '../firebase'; // Import the auth object from firebase
 
-function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
+function Header({ photoURL, setSearchQuery, setSortOption, theme, help, setHelp, setThemeMenu, themeMenu, setSortMenu, sortMenu, setTheme }) {
     const [accountMenu, setAccountMenu] = useState(false);
-    const [help, setHelp] = useState(false);
-    const [sortMenu, setSortMenu] = useState(false);
+    // const [help, setHelp] = useState(false);
+    // const [sortMenu, setSortMenu] = useState(false);
     const [index, setIndex] = useState(0);
-    const [themeMenu, setThemeMenu] = useState(false);
+    // const [themeMenu, setThemeMenu] = useState(false);
     
     const images = [
         {
           label: 'Upload File using this button',
           imgPath:
-            'https://gdisk.vercel.app/guide/upload-file.jpeg',
+            'upload-file.png',
         },
         {
           label: 'Search your Files using this input',
@@ -122,11 +122,11 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
             </Modal>
             <div 
                 style={{color: theme === 'dark' ? '#95a5bd' : '#52525b'}}
-                className='flex justify-between items-center pl-8 pr-12 py-2'
+                className='flex md:justify-between justify-around items-center mx-auto py-2 pl-5 2xl:pr-8 xl:pr-12 lg:pr-20 pr-24'
             >
                 <div className='flex items-center gap-2 w-[10%]'>
                     <img
-                        className='w-[25%]'
+                        className='lg:w-[25%] sm:w-[50%]'
                         src="https://gdisk.vercel.app/logo.png"
                         alt="Disk logo"
                     />
@@ -134,99 +134,101 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
                         Disk
                     </p>
                 </div>
-                <div 
-                    style={{backgroundColor: theme === 'dark' ? '#0D2136' : '#E9EEF6'}}
-                    className='flex items-center justify-between px-5 py-3 rounded-full gap-2 w-1/2'
-                >
-                    <div className='flex items-center'>
-                        <SearchIcon
-                            style={{ fontSize: 35 }}
-                            className='hover-transition hover:bg-[#D1D6DD] p-1 rounded-full cursor-pointer'
-                        />
-                        <input 
-                            style={{backgroundColor: theme === 'dark' ? '#0D2136' : '#E9EEF6'}}
-                            className='outline-none' 
-                            placeholder='Search in Disk' 
-                            type="text" 
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                        />
-                    </div>
-                    <div className='relative'>
-                        <TuneOutlinedIcon
-                            style={{ fontSize: 35 }}
-                            className='hover-transition hover:bg-[#D1D6DD] p-1 rounded-full cursor-pointer'
-                            onClick={() => setSortMenu((prev) => !prev)}
-                        />
-                        {sortMenu && (
-                            <div 
-                                style={{
-                                    backgroundColor: theme === 'dark' ? '#030712' : 'white',
-                                    color: theme === 'dark' ? 'white' : 'black'
-                                }}
-                                className='absolute right-0 top-10 w-[15rem] bg-white rounded-lg shadow-md z-10'
-                            >
-                                <p className='font-semibold px-5 py-2'>Sort By</p>
-                                {/* <hr /> */}
-                                {
-                                    theme === 'dark' ? (
-                                        <>
-                                            <p 
-                                                className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
-                                                onClick={() => handleSortOption('name_asc')}
-                                            >
-                                                Name Ascending
-                                            </p>
-                                            <p 
-                                                className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
-                                                onClick={() => handleSortOption('name_desc')}
-                                            >
-                                                Name Descending
-                                            </p>
-                                            <p 
-                                                className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
-                                                onClick={() => handleSortOption('date_asc')}
-                                            >
-                                                Date Modified Ascending
-                                            </p>
-                                            <p 
-                                                className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
-                                                onClick={() => handleSortOption('date_desc')}
-                                            >
-                                                Date Modified Descending
-                                            </p>
-                                        </>
-                                    ) : (
-                                        <>
-                                            <p 
-                                                className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
-                                                onClick={() => handleSortOption('name_asc')}
-                                            >
-                                                Name Ascending
-                                            </p>
-                                            <p 
-                                                className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
-                                                onClick={() => handleSortOption('name_desc')}
-                                            >
-                                                Name Descending
-                                            </p>
-                                            <p 
-                                                className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
-                                                onClick={() => handleSortOption('date_asc')}
-                                            >
-                                                Date Modified Ascending
-                                            </p>
-                                            <p 
-                                                className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
-                                                onClick={() => handleSortOption('date_desc')}
-                                            >
-                                                Date Modified Descending
-                                            </p>
-                                        </>
-                                    )
-                                }
-    
-                            </div>
-                        )}
+                <div className='w-full md:block hidden'>
+                    <div 
+                        style={{backgroundColor: theme === 'dark' ? '#0D2136' : '#E9EEF6'}}
+                        className='flex items-center justify-between px-5 py-3 rounded-full gap-2 w-1/2 mx-auto'
+                    >
+                        <div className='flex items-center'>
+                            <SearchIcon
+                                style={{ fontSize: 35 }}
+                                className='hover-transition hover:bg-[#D1D6DD] p-1 rounded-full cursor-pointer'
+                            />
+                            <input 
+                                style={{backgroundColor: theme === 'dark' ? '#0D2136' : '#E9EEF6'}}
+                                className='outline-none' 
+                                placeholder='Search in Disk' 
+                                type="text" 
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                        </div>
+                        <div className='relative'>
+                            <TuneOutlinedIcon
+                                style={{ fontSize: 35 }}
+                                className='hover-transition hover:bg-[#D1D6DD] p-1 rounded-full cursor-pointer'
+                                onClick={() => setSortMenu((prev) => !prev)}
+                            />
+                            {sortMenu && (
+                                <div 
+                                    style={{
+                                        backgroundColor: theme === 'dark' ? '#030712' : 'white',
+                                        color: theme === 'dark' ? 'white' : 'black'
+                                    }}
+                                    className='absolute right-0 top-10 w-[15rem] bg-white rounded-lg shadow-md z-10'
+                                >
+                                    <p className='font-semibold px-5 py-2'>Sort By</p>
+                                    {/* <hr /> */}
+                                    {
+                                        theme === 'dark' ? (
+                                            <>
+                                                <p 
+                                                    className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
+                                                    onClick={() => handleSortOption('name_asc')}
+                                                >
+                                                    Name Ascending
+                                                </p>
+                                                <p 
+                                                    className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
+                                                    onClick={() => handleSortOption('name_desc')}
+                                                >
+                                                    Name Descending
+                                                </p>
+                                                <p 
+                                                    className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
+                                                    onClick={() => handleSortOption('date_asc')}
+                                                >
+                                                    Date Modified Ascending
+                                                </p>
+                                                <p 
+                                                    className='hover-transition hover:bg-[#1f2937] px-5 py-2 cursor-pointer' 
+                                                    onClick={() => handleSortOption('date_desc')}
+                                                >
+                                                    Date Modified Descending
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <p 
+                                                    className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
+                                                    onClick={() => handleSortOption('name_asc')}
+                                                >
+                                                    Name Ascending
+                                                </p>
+                                                <p 
+                                                    className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
+                                                    onClick={() => handleSortOption('name_desc')}
+                                                >
+                                                    Name Descending
+                                                </p>
+                                                <p 
+                                                    className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
+                                                    onClick={() => handleSortOption('date_asc')}
+                                                >
+                                                    Date Modified Ascending
+                                                </p>
+                                                <p 
+                                                    className='hover-transition hover:bg-slate-200 px-5 py-2 cursor-pointer' 
+                                                    onClick={() => handleSortOption('date_desc')}
+                                                >
+                                                    Date Modified Descending
+                                                </p>
+                                            </>
+                                        )
+                                    }
+        
+                                </div>
+                            )}
+                        </div>
                     </div>
                 </div>
                 <div className='flex items-center gap-3 justify-between w-[8%] relative'>
@@ -239,24 +241,24 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
                                     backgroundColor: theme === 'dark' ? '#030712' : 'white',
                                     color: theme === 'dark' ? 'white' : 'black'
                                 }}
-                                className='absolute right-[2rem] top-[100%] w-[8rem] bg-white rounded-lg shadow-md'
+                                className='absolute z-10 right-[2rem] top-[100%] w-[8rem] bg-white rounded-lg shadow-md'
                             >
                                 {
                                     theme === 'dark' ? (
                                         <>
                                             <p className='px-5 py-2 font-semibold'>Theme</p>
                                             {/* <hr /> */}
-                                            <p className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Light</p>
-                                            <p className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Dark</p>
-                                            <p className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>System</p>
+                                            <p onClick={() => setTheme("light")} className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Light</p>
+                                            <p onClick={() => setTheme("dark")} className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Dark</p>
+                                            <p onClick={() => setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')} className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>System</p>
                                         </>
                                     ) : (
                                         <>
                                             <p className='px-5 py-2 font-semibold'>Theme</p>
                                             {/* <hr /> */}
-                                            <p className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Light</p>
-                                            <p className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Dark</p>
-                                            <p className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>System</p>       
+                                            <p onClick={() => setTheme("light")} className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Light</p>
+                                            <p onClick={() => setTheme("dark")} className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Dark</p>
+                                            <p onClick={() => setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')} className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>System</p>       
                                         </>
                                     )
                                 }
@@ -272,7 +274,7 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme }) {
                     />
                     {
                         accountMenu ? (
-                            <div className='absolute right-0 bottom-[-210%] w-[12rem] bg-white rounded-lg shadow-md'>
+                            <div className='absolute right-0 bottom-[-210%] w-[12rem] bg-white rounded-lg shadow-md z-10'>
                                 <p className='px-5 py-2 font-semibold text-black'>My Account</p>
                                 <hr />
                                 <p

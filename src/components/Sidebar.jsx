@@ -15,15 +15,14 @@ import { storage, db } from '../firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
-function Sidebar({ size, memory, theme }) {
-    const [open, setOpen] = useState(false);
+function Sidebar({ size, memory, theme, open, setOpen }) {
+    // const [open, setOpen] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [file, setFile] = useState(null);
 
     function handleFile(e) {
         if (e.target.files[0]) {
             setFile(e.target.files[0]);
-            // console.log(e.target.files[0]);
         }
     }
 
@@ -34,8 +33,7 @@ function Sidebar({ size, memory, theme }) {
 
         try {
             const fileRef = ref(storage, `files/${file.name}`);
-            const snapshot = await uploadBytes(fileRef, file);
-            // console.log(snapshot);
+            await uploadBytes(fileRef, file);
 
             const url = await getDownloadURL(fileRef);
 
@@ -125,133 +123,69 @@ function Sidebar({ size, memory, theme }) {
                     }
                 </Box>
             </Modal>
-            <div
-                style={{color: theme === 'dark' ? '#95a5bd' : '#09090b'}} 
-                className='flex flex-col gap-5 items-start px-5 w-[25%]'
-            >
-                {
-                    theme === 'dark' ? (
-                        <>
-                            <button
-                                onClick={() => setOpen(true)}
-                                className='hover-transition flex gap-4 items-center p-4 rounded-xl shadow-lg bg-[#0D2136] hover:bg-[#0F172A]'
-                            >
-                                <AddIcon />New
-                            </button>
-                            <div className='flex flex-col w-full'>
-                                <div className='flex gap-5 items-center bg-[#172554] py-2 px-4 rounded-full'>
-                                    <HomeOutlinedIcon />
-                                    <p>Home</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#1E293B] cursor-pointer'>
-                                    <FolderOutlinedIcon />
-                                    <p>My Drive</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#1E293B] cursor-pointer'>
-                                    <ComputerOutlinedIcon />
-                                    <p>Computers</p>
-                                </div>
-                            </div>
-                            <div className='flex flex-col w-full'>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#1E293B] cursor-pointer'>
-                                    <PeopleAltOutlinedIcon />
-                                    <p>Shared with me</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#1E293B] cursor-pointer'>
-                                    <ScheduleOutlinedIcon />
-                                    <p>Recent</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#1E293B] cursor-pointer'>
-                                    <StarBorderOutlinedIcon />
-                                    <p>Starred</p>
-                                </div>
-                            </div>
-                            <div className='flex flex-col w-full'>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#1E293B] cursor-pointer'>
-                                    <ReportGmailerrorredOutlinedIcon />
-                                    <p>Spam</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#1E293B] cursor-pointer'>
-                                    <DeleteOutlineOutlinedIcon />
-                                    <p>Trash</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#1E293B] cursor-pointer'>
-                                    <WbCloudyOutlinedIcon />
-                                    <p>Storage</p>
-                                </div>
-                            </div>
-                            <div className='w-full flex flex-col items-center gap-1'>
-                                <div className='w-full h-[0.5rem] rounded-full bg-[#384754]'>
-                                    <div 
-                                        style={{width : memoryPercentage}}
-                                        className='h-full rounded-full bg-[#BFDBFE]'
-                                    ></div>
-                                </div>
-                                <p>{size} of 100MB</p>
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <button
-                                onClick={() => setOpen(true)}
-                                className='hover-transition flex gap-4 items-center p-4 rounded-xl shadow-lg bg-white hover:bg-[#EEF5FD]'
-                            >
-                                <AddIcon />New
-                            </button>
-                            <div className='flex flex-col w-full'>
-                                <div className='flex gap-5 items-center bg-[#DBEAFE] py-2 px-4 rounded-full'>
-                                    <HomeOutlinedIcon />
-                                    <p>Home</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#E2E8F0] cursor-pointer'>
-                                    <FolderOutlinedIcon />
-                                    <p>My Drive</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#E2E8F0] cursor-pointer'>
-                                    <ComputerOutlinedIcon />
-                                    <p>Computers</p>
-                                </div>
-                            </div>
-                            <div className='flex flex-col w-full'>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#E2E8F0] cursor-pointer'>
-                                    <PeopleAltOutlinedIcon />
-                                    <p>Shared with me</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#E2E8F0] cursor-pointer'>
-                                    <ScheduleOutlinedIcon />
-                                    <p>Recent</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#E2E8F0] cursor-pointer'>
-                                    <StarBorderOutlinedIcon />
-                                    <p>Starred</p>
-                                </div>
-                            </div>
-                            <div className='flex flex-col w-full'>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#E2E8F0] cursor-pointer'>
-                                    <ReportGmailerrorredOutlinedIcon />
-                                    <p>Spam</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#E2E8F0] cursor-pointer'>
-                                    <DeleteOutlineOutlinedIcon />
-                                    <p>Trash</p>
-                                </div>
-                                <div className='flex gap-5 items-center py-2 px-4 rounded-full hover:bg-[#E2E8F0] cursor-pointer'>
-                                    <WbCloudyOutlinedIcon />
-                                    <p>Storage</p>
-                                </div>
-                            </div>
-                            <div className='w-full flex flex-col items-center gap-1'>
-                                <div className='w-full h-[0.5rem] rounded-full bg-[#C9CDD2]'>
-                                    <div 
-                                        style={{width : memoryPercentage}}
-                                        className='h-full rounded-full bg-green-500'
-                                    ></div>
-                                </div>
-                                <p>{size} of 100MB</p>
-                            </div>
-                        </>
-                    )
-                }
+            <div className='2xl:w-[15%] xl:w-[20%] lg:w-[25%] w-[8%] md:block hidden'>
+                <div
+                    style={{color: theme === 'dark' ? '#95a5bd' : '#09090b'}} 
+                    className='flex flex-col gap-5 lg:items-start items-center lg:px-5'
+                >
+                    <button
+                        onClick={() => setOpen(true)}
+                        className={`hover-transition menu-icon flex gap-4 items-center lg:p-4 p-4 lg:rounded-xl rounded-full shadow-lg ${theme === 'light' ? 'bg-white hover:bg-slate-100' : 'bg-[#0D2136] hover:bg-[#0F172A]'}`}
+                    >
+                        <AddIcon /><p className='lg:block hidden'>New</p>
+                    </button>
+                    <div className='flex flex-col w-full'>
+                        <div className={`flex gap-5 items-center ${theme === 'light' ? 'bg-blue-100' : 'bg-[#172554]'} lg:py-2 py-4 px-4 lg:justify-start justify-center rounded-full`}>
+                            <HomeOutlinedIcon />
+                            <p className='lg:block hidden'>Home</p>
+                        </div>
+                        <div className={`flex gap-5 items-center lg:py-2 py-4 px-4 lg:justify-start justify-center rounded-full ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-[#1E293B]'} cursor-pointer`}>
+                            <FolderOutlinedIcon />
+                            <p className='lg:block hidden'>My Drive</p>
+                        </div>
+                        <div className={`flex gap-5 items-center lg:py-2 py-4 px-4 lg:justify-start justify-center rounded-full ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-[#1E293B]'} cursor-pointer`}>
+                            <ComputerOutlinedIcon />
+                            <p className='lg:block hidden'>Computers</p>
+                        </div>
+                    </div>
+                    <div className='flex flex-col w-full'>
+                        <div className={`flex gap-5 items-center lg:py-2 py-4 px-4 lg:justify-start justify-center rounded-full ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-[#1E293B]'} cursor-pointer`}>
+                            <PeopleAltOutlinedIcon />
+                            <p className='lg:block hidden'>Shared with me</p>
+                        </div>
+                        <div className={`flex gap-5 items-center lg:py-2 py-4 px-4 lg:justify-start justify-center rounded-full ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-[#1E293B]'} cursor-pointer`}>
+                            <ScheduleOutlinedIcon />
+                            <p className='lg:block hidden'>Recent</p>
+                        </div>
+                        <div className={`flex gap-5 items-center lg:py-2 py-4 px-4 lg:justify-start justify-center rounded-full ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-[#1E293B]'} cursor-pointer`}>
+                            <StarBorderOutlinedIcon />
+                            <p className='lg:block hidden'>Starred</p>
+                        </div>
+                    </div>
+                    <div className='flex flex-col w-full'>
+                        <div className={`flex gap-5 items-center lg:py-2 py-4 px-4 lg:justify-start justify-center rounded-full ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-[#1E293B]'} cursor-pointer`}>
+                            <ReportGmailerrorredOutlinedIcon />
+                            <p className='lg:block hidden'>Spam</p>
+                        </div>
+                        <div className={`flex gap-5 items-center lg:py-2 py-4 px-4 lg:justify-start justify-center rounded-full ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-[#1E293B]'} cursor-pointer`}>
+                            <DeleteOutlineOutlinedIcon />
+                            <p className='lg:block hidden'>Trash</p>
+                        </div>
+                        <div className={`flex gap-5 items-center lg:py-2 py-4 px-4 lg:justify-start justify-center rounded-full ${theme === 'light' ? 'hover:bg-slate-200' : 'hover:bg-[#1E293B]'} cursor-pointer`}>
+                            <WbCloudyOutlinedIcon />
+                            <p className='lg:block hidden'>Storage</p>
+                        </div>
+                    </div>
+                    <div className='w-full flex flex-col items-center gap-1 lg:block hidden'>
+                        <div className={`w-full h-[0.5rem] rounded-full ${theme === 'light' ? 'bg-slate-300' : 'bg-[#384754]'} `}>
+                            <div 
+                                style={{width : memoryPercentage}}
+                                className={`h-full rounded-full ${theme === 'light' ? 'bg-blue-400' : 'bg-[#BFDBFE]'}`}
+                            ></div>
+                        </div>
+                        <p>{size} of 100MB</p>
+                    </div>
+                </div>
             </div>
         </>
     );

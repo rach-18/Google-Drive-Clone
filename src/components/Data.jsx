@@ -14,12 +14,16 @@ import { useEffect, useState } from 'react';
 import { db } from '../firebase';
 import { collection, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
 
-function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
+function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setHelp, setThemeMenu, setSortMenu }) {
     const [files, setFiles] = useState([]);
     const [view, setView] = useState("list");
     const [contextMenu, setContextMenu] = useState(null);
     const [previewFile, setPreviewFile] = useState(null);
     const [preview, setPreview] = useState(false);
+    const [command, setCommand] = useState("");
+    // const [filteredCommand, setFilteredCommand] = useState([]);
+    
+    const commands = ["upload a file", "see help", "change theme", "preview a file", "sort the files", "change the view"];
 
     useEffect(() => {
         const unsubscribe = onSnapshot(collection(db, "myFiles"), snapshot => {
@@ -38,6 +42,55 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
 
         return () => unsubscribe();
     }, [setSize]);
+
+    useEffect(() => {
+        let filteredCommand = [];
+        if (command.trim() === "") {
+            return; // If command is empty or whitespace, do nothing
+        }
+    
+        if (command !== "") {
+            filteredCommand = commands.filter(cmd => {
+                const cmdWords = cmd.split(" "); // Split command into individual words
+                const inputWords = command.split(" "); // Split input into individual words
+    
+                // Check if all words in cmdWords exist in inputWords
+                return cmdWords.every(word => inputWords.includes(word));
+            });
+        }
+    
+        if (command !== "" && filteredCommand.length !== 1) {
+            alert("Command not recognized. Kindly try again!");
+        } 
+        else {
+            if (filteredCommand[0] === 'upload a file') {
+                setOpen(true);
+            } 
+            else if (filteredCommand[0] === 'see help') {
+                setHelp(true);
+            } 
+            else if(filteredCommand[0] === 'change theme') {
+                setThemeMenu(true);
+            }
+            else if(filteredCommand[0] === 'preview a file') {
+                setPreview(true);
+            }
+            else if(filteredCommand[0] === 'sort the files') {
+                setSortMenu(true);
+            }
+            else if(filteredCommand[0] === 'change the view') {
+                if(view === 'list') {
+                    setView('grid');
+                }
+                else {
+                    setView('list');
+                }
+            }
+        }
+    
+        // Reset the command
+        setCommand("");
+    }, [command, commands, setOpen, setHelp]);    
 
     function changeBytes(bytes, decimals = 2) {
         if (bytes === 0) {
@@ -120,7 +173,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
     });
 
     return (
-        <div className='flex w-full'>
+        <div className='flex w-full relative'>
             <div 
                 style={{
                     backgroundColor: theme === 'dark' ? '#031525' : 'white',
@@ -136,24 +189,26 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
                                 style={{
                                     width: "4rem",
                                     height: "100%",
-                                    backgroundColor: view === "list" ? "#4E657C" : "transparent",
+                                    // backgroundColor: view === "list" ? (theme === 'dark' ? '#4E657C' : 'bg-blue-200') : "transparent",
                                     borderColor: theme === 'dark' ? '#71717A' : 'black'
                                 }}
-                                className='border-[0.1rem] rounded-l-full px-5 cursor-pointer'
+                                className={`border-[0.1rem] ${view === "list" ? (theme === 'dark' ? 'bg-[#4E657C]' : 'bg-green-100') : "transparent"} rounded-l-full px-5 cursor-pointer`}
                                 onClick={() => setView("list")}
                             />
                             <GridViewOutlinedIcon
                                 style={{
                                     width: "4rem",
                                     height: "100%",
-                                    backgroundColor: view === "grid" ? "#4E657C" : "transparent",
+                                    // backgroundColor: view === "grid" ? "#4E657C" : "transparent",
                                     borderColor: theme === 'dark' ? '#71717A' : 'black'
                                 }}
-                                className='border-[0.1rem] rounded-r-full px-5 cursor-pointer'
+                                className={`border-[0.1rem] ${view === "grid" ? (theme === 'dark' ? 'bg-[#4E657C]' : 'bg-green-100') : "transparent"} rounded-r-full px-5 cursor-pointer`}
                                 onClick={() => setView("grid")}
                             />
                         </div>
-                        <ErrorOutlineOutlinedIcon className='p-1 hover:bg-slate-400 rounded-full cursor-pointer' style={{fontSize: 32}} onClick={() => setPreview(true)} />
+                        <div className='sm:block hidden'>
+                            <ErrorOutlineOutlinedIcon className='p-1 hover:bg-slate-400 rounded-full cursor-pointer' style={{fontSize: 32}} onClick={() => setPreview(true)} />
+                        </div>
                     </div>
                 </div>
                 <div className='w-[98%] mx-auto my-5 flex flex-col gap-3'>
@@ -187,12 +242,14 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
                                                 {sortedFiles.map(({ id, data }) => (
                                                     <div
                                                         key={id}
-                                                        className={`hover-transition flex items-center justify-between p-4 rounded-xl cursor-pointer ${
+                                                        className={`hover-transition flex sm:flex-row flex-col items-center justify-between p-4 rounded-xl cursor-pointer ${
                                                             theme === 'dark' ? 'bg-[#0D2136] hover:bg-[#172554]' : 'bg-slate-100 hover:bg-[#DBEAFE]'
                                                         }`}
                                                         onClick={() => handlePreview({ id, data })}
                                                     >
                                                         <p>{data.filename}</p>
+                                                        <p className='sm:hidden block'>{changeBytes(data.size)}</p>
+                                                        <p className='sm:hidden block'>{new Date(data.timestamp?.toDate()).toLocaleDateString()}</p>
                                                         <MoreHorizOutlinedIcon
                                                             style={{ fontSize: 35 }}
                                                             className='p-2 rounded-full hover:bg-slate-400 cursor-pointer'
@@ -208,9 +265,9 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
                                                 <div
                                                     key={id}
                                                     onClick={() => handlePreview({ id, data })}
-                                                    className={`hover-transition flex flex-col items-start p-4 rounded-lg gap-2 cursor-pointer h-1/2 ${
+                                                    className={`hover-transition flex flex-col items-start p-4 rounded-lg gap-2 cursor-pointer sm:h-1/2 h-[80%] ${
                                                         theme === 'dark' ? 'bg-[#0D2136] hover:bg-[#172554]' : 'bg-slate-100 hover:bg-[#DBEAFE]'
-                                                    } ${preview === true ? 'w-[48%]' : 'w-[24%]'}`}
+                                                    } ${preview === true ? 'w-[48%]' : 'md:w-[24%] sm:w-[45%] w-full'}`}
                                                 >
                                                     <div className='flex justify-between items-center w-full'>
                                                         <p>{data.filename}</p>
@@ -222,7 +279,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
                                                     </div>
                                                     <div 
                                                         style={{ backgroundColor: theme === 'dark' ? '#334155' : 'white' }}
-                                                        className='w-full h-[8rem] rounded-lg flex justify-center items-center'
+                                                        className='w-full sm:h-[8rem] h-[30rem] rounded-lg flex justify-center items-center'
                                                     >
                                                         <p 
                                                             style={{ color: theme === 'dark' ? '#94A3B8' : '#71717A' }}
@@ -231,6 +288,8 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
                                                             {(data.filename.slice(data.filename.lastIndexOf(".") + 1)).toUpperCase()}
                                                         </p>
                                                     </div>
+                                                    <p className='sm:hidden block'>{changeBytes(data.size)}</p>
+                                                    <p className='sm:hidden block'>{new Date(data.timestamp?.toDate()).toLocaleDateString()}</p>
                                                 </div>
                                             ))}
                                         </div>
@@ -244,7 +303,9 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
             {
                 preview ? <Preview previewFile={previewFile} changeBytes={changeBytes} preview={preview} setPreview={setPreview} /> : <></>
             }
-            <Speech />
+            <div className='absolute bottom-[4rem] right-[2rem]'>
+                <Speech command={command} setCommand={setCommand} theme={theme} />
+            </div>
         </div>
     );
 }
