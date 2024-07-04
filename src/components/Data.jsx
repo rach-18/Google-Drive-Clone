@@ -9,6 +9,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import Preview from './Preview';
+import Speech from './Speech';
 import { useEffect, useState } from 'react';
 import { db } from '../firebase';
 import { collection, onSnapshot, doc, deleteDoc } from 'firebase/firestore';
@@ -243,6 +244,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme }) {
             {
                 preview ? <Preview previewFile={previewFile} changeBytes={changeBytes} preview={preview} setPreview={setPreview} /> : <></>
             }
+            <Speech />
         </div>
     );
 }
