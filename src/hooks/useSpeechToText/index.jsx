@@ -17,13 +17,6 @@ function useSpeechToText(options) {
         recognition.lang = options.lang || "en-US";
         recognition.continuous = options.continuous || false;
 
-        // if ("webkitSpeechGrammarList" in window) {
-        //     const grammar = "#JSGF V1.0; grammar punctuation; public <punc> = . | , | ? | ! | ; | : ;";
-        //     const speechRecognitionList = new window.webkitSpeechGrammarList();
-        //     speechRecognitionList.addFromString(grammar, 1);
-        //     recognition.grammars = speechRecognitionList;
-        // }
-
         recognition.onresult = (event) => {
             let finalTranscript = "";
             console.log(event);

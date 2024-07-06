@@ -61,7 +61,7 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme, help, setHelp,
                 'Preview.jpeg',
         },
         {
-            label: 'Use the voice command using this button',
+            label: 'You can upload a file, open the app guide, change the theme, preview a file, sort the files and change the layout using the voice command.',
             imgPath:
                 'Voice-Command.jpeg',
         }

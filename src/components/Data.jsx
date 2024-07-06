@@ -24,7 +24,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
     const [fileName, setFileName] = useState("");
     // const [filteredCommand, setFilteredCommand] = useState([]);
     
-    const commands = ["upload a file", "see help", "change theme", "preview a file", "sort the files", "change the view"];
+    const commands = ["upload a file", "open the app guide", "change the theme", "preview a file", "sort the files", "change the layout"];
 
     useEffect(() => {
         const unsubscribe = onSnapshot(collection(db, "myFiles"), snapshot => {
@@ -67,10 +67,10 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
             if (filteredCommand[0] === 'upload a file') {
                 setOpen(true);
             } 
-            else if (filteredCommand[0] === 'see help') {
+            else if (filteredCommand[0] === 'open the app guide') {
                 setHelp(true);
             } 
-            else if(filteredCommand[0] === 'change theme') {
+            else if(filteredCommand[0] === 'change the theme') {
                 setThemeMenu(true);
             }
             else if(filteredCommand[0] === 'preview a file') {
@@ -79,7 +79,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
             else if(filteredCommand[0] === 'sort the files') {
                 setSortMenu(true);
             }
-            else if(filteredCommand[0] === 'change the view') {
+            else if(filteredCommand[0] === 'change the layout') {
                 if(view === 'list') {
                     setView('grid');
                 }
@@ -124,6 +124,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
 
     const handleDelete = async (file) => {
         await deleteDoc(doc(db, "myFiles", file.id));
+        setContextMenu(null);
     };
 
     const handleCopyLink = (fileURL) => {
