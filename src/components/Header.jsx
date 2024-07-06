@@ -18,32 +18,52 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme, help, setHelp,
         {
           label: 'Upload File using this button',
           imgPath:
-            'upload-file.png',
+            'Upload.jpeg',
         },
         {
           label: 'Search your Files using this input',
           imgPath:
-            'https://gdisk.vercel.app/guide/search-files.jpeg',
+            'Search.jpeg',
         },
         {
           label: 'Sort your Files using this button',
           imgPath:
-            'https://gdisk.vercel.app/guide/sort-files.jpeg',
+            'Sort.jpeg',
         },
         {
           label: 'Change your app theme using this button',
           imgPath:
-            'https://gdisk.vercel.app/guide/change-theme.jpeg',
+            'Theme.jpeg',
         },
         {
-            label: 'Open the context menu by right clicking on the file or long press (on phone) to get sharable link or delete the file',
+            label: 'Open the context menu by right clicking on this button',
             imgPath:
-                'https://gdisk.vercel.app/guide/context-menu.jpeg',
+                'Context-Menu.jpeg',
         },
         {
             label: 'Change app layout using this toggle',
             imgPath:
-                'https://gdisk.vercel.app/guide/change-layout.jpeg',
+                'View.jpeg',
+        },
+        {
+            label: 'See the App Guide using this button',
+            imgPath:
+                'App-Guide.jpeg',
+        },
+        {
+            label: 'Logout by clicking on the profile picture',
+            imgPath:
+                'Logout.jpeg',
+        },
+        {
+            label: 'See the Preview tab using this button',
+            imgPath:
+                'Preview.jpeg',
+        },
+        {
+            label: 'Use the voice command using this button',
+            imgPath:
+                'Voice-Command.jpeg',
         }
     ];
 

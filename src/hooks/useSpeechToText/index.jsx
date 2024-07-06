@@ -17,15 +17,16 @@ function useSpeechToText(options) {
         recognition.lang = options.lang || "en-US";
         recognition.continuous = options.continuous || false;
 
-        if ("webkitSpeechGrammarList" in window) {
-            const grammar = "#JSGF V1.0; grammar punctuation; public <punc> = . | , | ? | ! | ; | : ;";
-            const speechRecognitionList = new window.webkitSpeechGrammarList();
-            speechRecognitionList.addFromString(grammar, 1);
-            recognition.grammars = speechRecognitionList;
-        }
+        // if ("webkitSpeechGrammarList" in window) {
+        //     const grammar = "#JSGF V1.0; grammar punctuation; public <punc> = . | , | ? | ! | ; | : ;";
+        //     const speechRecognitionList = new window.webkitSpeechGrammarList();
+        //     speechRecognitionList.addFromString(grammar, 1);
+        //     recognition.grammars = speechRecognitionList;
+        // }
 
         recognition.onresult = (event) => {
             let finalTranscript = "";
+            console.log(event);
 
             for (let i = 0; i < event.results.length; i++) {
                 if (event.results[i].isFinal) {
@@ -48,7 +49,11 @@ function useSpeechToText(options) {
         return () => {
             recognition.stop();
         }
+
+        // console.log(recognitionRef, recognition);
     }, [options.interimResults, options.lang, options.continuous]);
+
+    console.log(recognitionRef);
 
     function startListening() {
         if (recognitionRef.current && !isListening) {
