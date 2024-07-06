@@ -12,10 +12,7 @@ import { auth } from '../firebase'; // Import the auth object from firebase
 
 function Header({ photoURL, setSearchQuery, setSortOption, theme, help, setHelp, setThemeMenu, themeMenu, setSortMenu, sortMenu, setTheme }) {
     const [accountMenu, setAccountMenu] = useState(false);
-    // const [help, setHelp] = useState(false);
-    // const [sortMenu, setSortMenu] = useState(false);
     const [index, setIndex] = useState(0);
-    // const [themeMenu, setThemeMenu] = useState(false);
     
     const images = [
         {
@@ -167,7 +164,6 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme, help, setHelp,
                                     className='absolute right-0 top-10 w-[15rem] bg-white rounded-lg shadow-md z-10'
                                 >
                                     <p className='font-semibold px-5 py-2'>Sort By</p>
-                                    {/* <hr /> */}
                                     {
                                         theme === 'dark' ? (
                                             <>
@@ -247,7 +243,6 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme, help, setHelp,
                                     theme === 'dark' ? (
                                         <>
                                             <p className='px-5 py-2 font-semibold'>Theme</p>
-                                            {/* <hr /> */}
                                             <p onClick={() => setTheme("light")} className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Light</p>
                                             <p onClick={() => setTheme("dark")} className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Dark</p>
                                             <p onClick={() => setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')} className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>System</p>
@@ -255,7 +250,6 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme, help, setHelp,
                                     ) : (
                                         <>
                                             <p className='px-5 py-2 font-semibold'>Theme</p>
-                                            {/* <hr /> */}
                                             <p onClick={() => setTheme("light")} className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Light</p>
                                             <p onClick={() => setTheme("dark")} className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Dark</p>
                                             <p onClick={() => setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')} className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>System</p>       

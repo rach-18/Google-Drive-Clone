@@ -20,10 +20,7 @@ function App() {
   const [help, setHelp] = useState(false);
   const [themeMenu, setThemeMenu] = useState(false);
   const [sortMenu, setSortMenu] = useState(false);
-  // const [theme, setTheme] = useState(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   const [theme, setTheme] = useState('light');
-
-  // console.log(theme);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -40,11 +37,8 @@ function App() {
 
   useEffect(() => {
     const mem = (bytes / 100000000) * 100;
-    // console.log(mem);
     setMemory(mem);
   }, [bytes]);
-
-  // console.log(memory);
 
   function signIn() {
     signInWithPopup(auth, provider)
@@ -53,8 +47,10 @@ function App() {
   }
 
   if (loading) {
-    return <div>Loading...</div>; // You can replace this with a spinner or any loading component
+    return <div>Loading...</div>;
   }
+
+  // console.log(user);
 
   return (
     <>
@@ -71,7 +67,7 @@ function App() {
                 <div className='flex w-full sm:gap-5 gap-2 px-5 py-2 flex-wrap'>
                   <button
                     onClick={() => setOpen(true)}
-                    className='hover-transition menu-icon flex gap-4 items-center lg:p-4 p-4 rounded-xl shadow-lg bg-[#0D2136] hover:bg-[#0F172A] mb-2'
+                    className={`hover-transition menu-icon flex gap-4 items-center lg:p-4 p-4 rounded-xl shadow-lg ${theme === 'light' ? 'bg-white hover:bg-slate-100' : 'bg-[#0D2136] hover:bg-[#0F172A] text-[#95a5bd]'} mb-2`}
                   >
                     <AddIcon /><p>New</p>
                   </button>
@@ -107,7 +103,6 @@ function App() {
                                 className='absolute right-0 top-10 w-[15rem] bg-white rounded-lg shadow-md z-10'
                             >
                                 <p className='font-semibold px-5 py-2'>Sort By</p>
-                                {/* <hr /> */}
                                 {
                                     theme === 'dark' ? (
                                         <>
@@ -174,7 +169,6 @@ function App() {
               </div>
               <Data searchQuery={searchQuery} sortOption={sortOption} setSize={setSize} setBytes={setBytes} theme={theme} setOpen={setOpen} setHelp={setHelp} setThemeMenu={setThemeMenu} setSortMenu={setSortMenu} />
             </div>
-            {/* <Preview previewFile={previewFile} /> */}
           </div>
         </div>
       ) : (

@@ -56,6 +56,7 @@ function Sidebar({ size, memory, theme, open, setOpen }) {
     // Format the memory to a proper percentage string
     const memoryPercentage = `${memory}%`;
 
+    console.log(file);
     return (
         <>
             <Modal

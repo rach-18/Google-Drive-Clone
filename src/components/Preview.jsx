@@ -26,7 +26,7 @@ function Preview({ previewFile, changeBytes, theme, preview, setPreview }) {
     };
 
     return (
-        <div className={`w-[35%] ${theme === 'light' ? 'bg-white text-black' : 'bg-[#031525] text-[#95a5bd]'} bg-white mr-5 rounded-xl`}>
+        <div className={`w-[35%] ${theme === 'light' ? 'bg-white text-black' : 'bg-[#031525] text-[#95a5bd]'} mr-5 rounded-xl`}>
             <div className='flex w-full justify-end px-3 pt-3 pb-5'>
                 <CloseOutlinedIcon className='cursor-pointer' onClick={() => setPreview(false)} />
             </div>

@@ -21,6 +21,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
     const [previewFile, setPreviewFile] = useState(null);
     const [preview, setPreview] = useState(false);
     const [command, setCommand] = useState("");
+    const [fileName, setFileName] = useState("");
     // const [filteredCommand, setFilteredCommand] = useState([]);
     
     const commands = ["upload a file", "see help", "change theme", "preview a file", "sort the files", "change the view"];
@@ -112,6 +113,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
             mouseY: event.clientY - 4,
             file,
         });
+        setFileName(file.data.filename);
         console.log(contextMenu);
         console.log(file);
     };
@@ -130,14 +132,6 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
         }).catch(err => {
             console.error("Failed to copy link: ", err);
         });
-    };
-
-    const handleRename = (file) => {
-        const newFileName = prompt("Enter new file name:", file.data.filename);
-        if (newFileName) {
-            // Logic to rename the file
-            // ...
-        }
     };
 
     const handleDownload = (fileURL) => {
@@ -216,10 +210,10 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
                         <div className='flex justify-between bg-slate-300 px-5 py-1 rounded-full'>
                             <div className='flex gap-5'>
                                 <LinkOutlinedIcon onClick={() => handleCopyLink(contextMenu.file.data.fileURL)} className='p-1 rounded-full hover:bg-slate-500 cursor-pointer' style={{fontSize: 30}} />
-                                <DriveFileRenameOutlineOutlinedIcon onClick={() => handleRename(contextMenu.file)} className='p-1 rounded-full hover:bg-slate-500 cursor-pointer' style={{fontSize: 30}} />
                                 <FileDownloadOutlinedIcon onClick={() => handleDownload(contextMenu.file.data.fileURL)} className='p-1 rounded-full hover:bg-slate-500 cursor-pointer' style={{fontSize: 30}} />
                                 <DeleteOutlineOutlinedIcon onClick={() => handleDelete(contextMenu.file)} className='p-1 rounded-full hover:bg-slate-500 cursor-pointer' style={{fontSize: 30}} />
                             </div>
+                            <p>{fileName}</p>
                             <CloseIcon onClick={handleClose} className='p-1 cursor-pointer' style={{fontSize: 30}} />
                         </div>
                     )}
@@ -248,8 +242,9 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
                                                         onClick={() => handlePreview({ id, data })}
                                                     >
                                                         <p>{data.filename}</p>
-                                                        <p className='sm:hidden block'>{changeBytes(data.size)}</p>
-                                                        <p className='sm:hidden block'>{new Date(data.timestamp?.toDate()).toLocaleDateString()}</p>
+                                                        <p className='sm:hidden block'>Size: {changeBytes(data.size)}</p>
+                                                        <p className='sm:hidden block'>Last modified: {new Date(data.timestamp?.toDate()).toLocaleDateString()}</p>
+                                                        <a href={data.fileURL} className='text-blue-400 sm:hidden block' target='_blank'>Open File</a>
                                                         <MoreHorizOutlinedIcon
                                                             style={{ fontSize: 35 }}
                                                             className='p-2 rounded-full hover:bg-slate-400 cursor-pointer'
@@ -265,7 +260,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
                                                 <div
                                                     key={id}
                                                     onClick={() => handlePreview({ id, data })}
-                                                    className={`hover-transition flex flex-col items-start p-4 rounded-lg gap-2 cursor-pointer sm:h-1/2 h-[80%] ${
+                                                    className={`hover-transition flex flex-col sm:items-start items-center p-4 rounded-lg gap-2 cursor-pointer sm:h-1/2 h-[80%] ${
                                                         theme === 'dark' ? 'bg-[#0D2136] hover:bg-[#172554]' : 'bg-slate-100 hover:bg-[#DBEAFE]'
                                                     } ${preview === true ? 'w-[48%]' : 'md:w-[24%] sm:w-[45%] w-full'}`}
                                                 >
@@ -288,8 +283,9 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
                                                             {(data.filename.slice(data.filename.lastIndexOf(".") + 1)).toUpperCase()}
                                                         </p>
                                                     </div>
-                                                    <p className='sm:hidden block'>{changeBytes(data.size)}</p>
-                                                    <p className='sm:hidden block'>{new Date(data.timestamp?.toDate()).toLocaleDateString()}</p>
+                                                    <p className='sm:hidden block'>Size: {changeBytes(data.size)}</p>
+                                                    <p className='sm:hidden block'>Last Modified: {new Date(data.timestamp?.toDate()).toLocaleDateString()}</p>
+                                                    <a href={data.fileURL} className='text-blue-400 sm:hidden block' target='_blank'>Open File</a>
                                                 </div>
                                             ))}
                                         </div>
@@ -301,7 +297,7 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
                 </div>
             </div>
             {
-                preview ? <Preview previewFile={previewFile} changeBytes={changeBytes} preview={preview} setPreview={setPreview} /> : <></>
+                preview ? <Preview previewFile={previewFile} changeBytes={changeBytes} preview={preview} setPreview={setPreview} theme={theme} /> : <></>
             }
             <div className='absolute bottom-[4rem] right-[2rem]'>
                 <Speech command={command} setCommand={setCommand} theme={theme} />
