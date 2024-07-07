@@ -41,6 +41,8 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
             setSize(changeBytes(totalSize));
         });
 
+        // console.log(files);
+
         return () => unsubscribe();
     }, [setSize]);
 
@@ -92,6 +94,8 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
         // Reset the command
         setCommand("");
     }, [command, commands, setOpen, setHelp]);    
+
+    // console.log(files);
 
     function changeBytes(bytes, decimals = 2) {
         if (bytes === 0) {

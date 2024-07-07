@@ -263,16 +263,40 @@ function Header({ photoURL, setSearchQuery, setSortOption, theme, help, setHelp,
                                     theme === 'dark' ? (
                                         <>
                                             <p className='px-5 py-2 font-semibold'>Theme</p>
-                                            <p onClick={() => setTheme("light")} className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Light</p>
-                                            <p onClick={() => setTheme("dark")} className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Dark</p>
-                                            <p onClick={() => setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')} className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>System</p>
+                                            <p onClick={() => {
+                                                setTheme("light");
+                                                setThemeMenu(false);
+                                            }} 
+                                                className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Light</p>
+                                            <p onClick={() => {
+                                                setTheme("dark");
+                                                setThemeMenu(false);
+                                            }} 
+                                            className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>Dark</p>
+                                            <p onClick={() => {
+                                                setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                                                setThemeMenu(false);
+                                            }} 
+                                            className='hover-transition px-5 py-2 hover:bg-[#1f2937] cursor-pointer'>System</p>
                                         </>
                                     ) : (
                                         <>
                                             <p className='px-5 py-2 font-semibold'>Theme</p>
-                                            <p onClick={() => setTheme("light")} className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Light</p>
-                                            <p onClick={() => setTheme("dark")} className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Dark</p>
-                                            <p onClick={() => setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')} className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>System</p>       
+                                            <p onClick={() => {
+                                                setTheme("light");
+                                                setThemeMenu(false);
+                                            }} 
+                                            className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Light</p>
+                                            <p onClick={() => {
+                                                setTheme("dark");
+                                                setThemeMenu(false);
+                                            }} 
+                                            className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>Dark</p>
+                                            <p onClick={() => {
+                                                setTheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                                                setThemeMenu(false);
+                                            }} 
+                                            className='hover-transition px-5 py-2 hover:bg-slate-200 cursor-pointer'>System</p>       
                                         </>
                                     )
                                 }
