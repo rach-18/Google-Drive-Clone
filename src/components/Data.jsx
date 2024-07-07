@@ -240,7 +240,10 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
                                                         className={`hover-transition flex sm:flex-row flex-col items-center justify-between p-4 rounded-xl cursor-pointer ${
                                                             theme === 'dark' ? 'bg-[#0D2136] hover:bg-[#172554]' : 'bg-slate-100 hover:bg-[#DBEAFE]'
                                                         }`}
-                                                        onClick={() => handlePreview({ id, data })}
+                                                        onClick={() => {
+                                                            handlePreview({ id, data });
+                                                            setPreview(true);
+                                                        }}
                                                     >
                                                         <p>{data.filename}</p>
                                                         <p className='sm:hidden block'>Size: {changeBytes(data.size)}</p>
@@ -260,7 +263,10 @@ function Data({ searchQuery, sortOption, setSize, setBytes, theme, setOpen, setH
                                             {sortedFiles.map(({ id, data }) => (
                                                 <div
                                                     key={id}
-                                                    onClick={() => handlePreview({ id, data })}
+                                                    onClick={() => {
+                                                        handlePreview({ id, data });
+                                                        setPreview(true);
+                                                    }}
                                                     className={`hover-transition flex flex-col sm:items-start items-center p-4 rounded-lg gap-2 cursor-pointer sm:h-1/2 h-[80%] ${
                                                         theme === 'dark' ? 'bg-[#0D2136] hover:bg-[#172554]' : 'bg-slate-100 hover:bg-[#DBEAFE]'
                                                     } ${preview === true ? 'w-[48%]' : 'md:w-[24%] sm:w-[45%] w-full'}`}
